@@ -1,0 +1,57 @@
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th>Rank</th>
+      <th>Name</th>
+      <th>Symbol</th>
+      <th>Price</th>
+      <th>1hr</th>
+      <th>24hrs</th>
+      <th>7d</th>
+      <th>Current value</th>
+      <th>Profit/loss</th>
+      <th>Invested at</th>
+      <th>Investment</th>
+      <th>Amount owned</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @currencies.each do |currency| %>
+      <% if currency.user_id == current_user.id %>
+        <% if currency.symbol %>
+          <% currency.symbol = currency.symbol.upcase %>
+        <% end %>
+        <tr>
+        <% for x in @portfolio_currency %>
+          <% if currency.symbol == x["symbol"] %>
+            <td><%= x["rank"] %></td>
+            <td><%= link_to x["name"], currency %></td>
+            <td><%= currency.symbol %></td>
+            <td>$<%= x["price_usd"] %></td>
+            <td>$<%= x["percent_change_1h"] %>%</td>
+            <td>$<%= x["percent_change_24h"] %>%</td>
+            <td>$<%= x["percent_change_7d"] %>%</td>
+            <td><%= number_to_currency (x["price_usd"]).to_d * currency.amount_owned %></td>
+            <td>$<%= (x["price_usd"]).to_d * currency.amount_owned - (currency.invested_at * currency.amount_owned) %></td>
+            <% @profit_loss += (x["price_usd"]).to_d * currency.amount_owned - (currency.invested_at * currency.amount_owned) %>
+          <% end %>
+        <% end %>
+          <td>$<%= currency.invested_at %></td>
+            <td>$<%= currency.invested_at * currency.amount_owned %></td>
+          <td><%= currency.amount_owned %></td>
+          <td><%= currency.created_at %></td>
+        </tr>
+        <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<br><br>
+
+<strong>Portfolio profit/loss: </strong> <%= number_to_currency(@profit_loss) %>
+
+<br><br><br>
+
+<%= link_to 'Add Currency', new_currency_path, class: 'btn btn-primary' %>
