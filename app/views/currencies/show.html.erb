@@ -1,6 +1,15 @@
+<% for x in @show_currency %>
+	<% if @currency.symbol.upcase == x["symbol"] %>
+		<% currency_price = x["price_usd"] %>
+		<% currency_name = x["name"] %>
+		<% currency_rank = x["rank"] %>
+	<% end %>
+<% end %>
+
 <div class="panel panel-default container-3">
   <div class="panel-heading">
-    <h3 class="panel-title">My <%= @currency.symbol %></h3>
+    <h3 class="panel-title">Your <%= currency_name %>
+</h3>
   </div>
   <div class="panel-body">
     <div class="form-group">
@@ -10,15 +19,18 @@
 		  <%= @currency.symbol.upcase %>
 		</p>
 
-
 		<p>
 		  <strong>Invested at:</strong>
-		  <%= @currency.invested_at %>
+			$<%= currency_price = x["price_usd"] %>
+		</p>
+		<p>
+		  <strong>Rank:</strong>
+			<%= currency_rank %>
 		</p>
 
 		<p>
-		  <strong>Amount owned:</strong>
-		  <%= @currency.amount_owned %>
+		  <strong>In your portfolio:</strong>
+		  <%= @currency.amount_owned %> <%= @currency.symbol.upcase %>
 		</p>
 
 
